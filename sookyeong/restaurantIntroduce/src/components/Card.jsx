@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-// 스타일드 컴포넌트를 사용하여 스타일 정의
+// 스타일드 컴포넌트를 사용하여 StyledWrapper 스타일 정의
 const StyledWrapper = styled.div`
   display: flex; /* 자식 요소들을 수평으로 정렬하기 위해 flex 사용 */
   align-items: center; /* 수직 가운데 정렬 */
@@ -10,6 +10,7 @@ const StyledWrapper = styled.div`
   margin: 1rem; /* 바깥쪽 여백 */
 `;
 
+// 스타일드 컴포넌트를 사용하여 StyledCard 스타일 정의
 const StyledCard = styled.div`
   background-color: #f8f8f8; /* 배경색 설정 */
   width: 30%; /* 카드의 너비 */
@@ -45,6 +46,7 @@ const StyledCard = styled.div`
   }
 `;
 
+// 스타일드 컴포넌트를 사용하여 StyleddLike 스타일 정의
 const StyledLike = styled.div`
   display: flex; /* 자식 요소들을 수평으로 정렬하기 위해 flex 사용 */
   align-items: center; /* 수직 가운데 정렬 */
@@ -54,35 +56,45 @@ const StyledLike = styled.div`
   font-size: 1.5rem; /* 글꼴 크기 */
 `;
 
-// Card 컴포넌트 정의
+// 좋아요 기능이 있는 Card 컴포넌트 정의
 const Card = ({ item, onLikeToggle }) => {
-  const [liked, setLiked] = useState(false); /* 좋아요 상태 관리를 위한 상태 */
+  // useState 훅을 사용하여 liked 상태를 초기값 false로 설정
+  const [liked, setLiked] = useState(false); 
 
-  // 좋아요 토글 함수
+  // 좋아요 클릭 시 상태를 true/false로 변환하는 handleLikeToggle 함수
   const handleLikeToggle = () => {
-    setLiked(!liked); /* 좋아요 상태를 토글 */
+    // 좋아요 상태 false로 저장
+    setLiked(!liked); 
+    // 좋아요 클릭 시 (= Toggle 시) item.id와 변경된 좋아요 상태 저장
     onLikeToggle(
       item.id,
       !liked
-    ); /* 부모 컴포넌트로부터 전달받은 onLikeToggle 함수 호출 */
+    );
   };
 
   return (
     <StyledWrapper>
+      {/* StyledWrapper 서식 적용 */}
+      {/* StyledCard 서식 적용 */}
       <StyledCard>
-        {/* 레스토랑 상세 페이지로 이동하는 링크 */}
+        {/* restaurant의 상세 페이지로 이동하는 링크 */}
         <Link to={`/${item.id}`} style={{ textDecoration: "none" }}>
+           {/* 레스토랑 이미지 */}
           <img src={item.imageUrl} alt={item.name} />
           <div className="info">
+            {/* 레스토랑 이름 */}
             <h2>{item.name}</h2>
+            {/* 레스토랑 주소 */}
             <p>{item.address}</p>
           </div>
         </Link>
       </StyledCard>
-      {/* 좋아요 버튼 */}
+      {/* StyledLike 서식 적용 */}
+      {/* 좋아요 버튼 클릭 후 상태값이 true일 경우 🤍, false일 경우 😵 출력 */}
       <StyledLike onClick={handleLikeToggle}>{liked ? "🤍" : "😵"}</StyledLike>
     </StyledWrapper>
   );
 };
 
+// RestaurantDetail 컴포넌트 내보내기
 export default Card;

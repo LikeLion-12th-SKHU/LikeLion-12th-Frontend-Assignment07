@@ -7,7 +7,7 @@ import JMT from "./JMT.json"; // JSON 파일 import
 import Search from "./components/Search";
 import useInput from "./hooks/useInput"; // useInput 훅 import
 
-// 스타일링된 컴포넌트 정의
+// 스타일드 컴포넌트를 사용하여 StyledText 스타일 정의
 const StyledText = styled.div`
   display: flex;
   align-items: center;
@@ -76,7 +76,7 @@ const App = () => {
   return (
     <Router>
       <div>
-        {/* 상단 로고 및 설명 */}
+        {/* tyledText 서식 적용 */}
         <StyledText>
           <div className="effect">
             <img
@@ -131,4 +131,5 @@ const SearchResults = ({ items, onLikeToggle }) => {
   );
 };
 
-export default App; // App 컴포넌트 내보내기
+// App 컴포넌트 내보내기
+export default App;

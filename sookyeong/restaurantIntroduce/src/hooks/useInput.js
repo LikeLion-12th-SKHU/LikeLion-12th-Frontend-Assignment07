@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-// useInput 커스텀 훅 정의
+// 입력할 수 있는 useInput 정의
 const useInput = (initialValue) => {
   const [value, setValue] = useState(initialValue); // value 상태와 그 값을 변경하는 setValue 함수를 선언하고 초기값은 초기값으로 초기화
 
@@ -15,4 +15,5 @@ const useInput = (initialValue) => {
   };
 };
 
-export default useInput; // useInput 훅 내보내기
+// useInput 내보내기
+export default useInput;
