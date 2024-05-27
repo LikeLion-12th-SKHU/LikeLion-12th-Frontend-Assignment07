@@ -23,31 +23,6 @@ const RestaurantListContainer = styled.div`
   padding: 15px;
 `;
 
-function RestaurantSearch({ restaurants, search, setSearch }) {
-  return (
-    <>
-      <InputContainer
-        type='text'
-        value={search}
-        onChange={setSearch}
-      />
-
-      <RestaurantListContainer>
-        {restaurants
-          .filter((restaurant) =>
-            restaurant.name.toLowerCase().includes(search.toLowerCase())
-          )
-          .map((restaurant) => (
-            <RestaurantCard
-              key={restaurant.id}
-              restaurant={restaurant}
-            />
-          ))}
-      </RestaurantListContainer>
-    </>
-  );
-}
-
 function App() {
   const [search, setSearch] = useInput("");
 
@@ -55,7 +30,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route
-          path='/'
+          path='/' //초기 화면 RestaurantSearch 렌더링
           element={
             <RestaurantSearch
               restaurants={data}
@@ -65,11 +40,37 @@ function App() {
           }
         />
         <Route
-          path='/:id'
+          path='/:id' //아이디에 맞는 식당의 디테일 페이지로 이동
           element={<RestaurantDetail />}
         />
       </Routes>
     </BrowserRouter>
+  );
+}
+
+function RestaurantSearch({ restaurants, search, setSearch }) {
+  return (
+    <>
+      <InputContainer
+        type='text'
+        value={search} //현재 값
+        onChange={setSearch} //입력 상태가 변경되면 setSearch를 호출해 상태 업데이트
+      />
+
+      <RestaurantListContainer>
+        {restaurants
+          .filter(
+            (restaurant) =>
+              restaurant.name.toLowerCase().includes(search.toLowerCase()) //검색된 식당 이름 필터링
+          )
+          .map((restaurant) => (
+            <RestaurantCard
+              key={restaurant.id}
+              restaurant={restaurant} //RestaurantCard에 식당 데이터 전달
+            />
+          ))}
+      </RestaurantListContainer>
+    </>
   );
 }
 

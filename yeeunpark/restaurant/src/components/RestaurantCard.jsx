@@ -35,6 +35,7 @@ const CardName = styled.p`
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 40px;
+  color: black;
 `;
 
 const CardAddress = styled.p`
@@ -52,18 +53,19 @@ const CardBtn = styled.button`
 
 function RestaurantCard({ restaurant }) {
   const { id, name, address, imageUrl } = restaurant;
-  const [liked, setLiked] = useState(restaurant.liked);
+  const [liked, setLiked] = useState(restaurant.liked); //좋아요 상태 관리
 
   const handleLike = () => {
-    setLiked(!liked);
-    restaurant.liked = !liked;
+    //좋아요 버튼 클릭시 호출되는 핸들러
+    setLiked(!liked); //버튼을 누르면 상태를 반전
+    restaurant.liked = !liked; //restaurant 객체의 속성 업데이트
   };
 
   return (
     <CardContainer>
       <Link
-        to={`/${id}`}
-        style={{ textDecoration: "none", color: "black" }}>
+        to={`/${id}`} //id를 통해 경로 설정
+        style={{ textDecoration: "none" }}>
         <CardWrap>
           <CardImg src={imageUrl} />
           <CardTxt>
@@ -73,7 +75,7 @@ function RestaurantCard({ restaurant }) {
         </CardWrap>
       </Link>
       <CardBtn
-        liked={liked}
+        liked={liked} //좋아요 상태에 따라 버튼 아이콘 변경
         onClick={handleLike}>
         {liked ? "🩵" : "😵"}
       </CardBtn>

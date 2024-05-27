@@ -27,20 +27,24 @@ const DetailName = styled.p`
 
 const DetailTxt = styled.p`
   font-size: 15px;
-  color: #555;
+  color: gray;
 `;
 
 const DetailMsg = styled.p`
   font-size: 15px;
-  color: ${(props) => (props.liked ? "green" : "red")};
+  color: ${(props) =>
+    props.liked ? "green" : "red"}; //liked prop에 따라 텍스트 색상 변경
 `;
 
 function RestaurantDetail() {
-  const { id } = useParams();
+  const { id } = useParams(); //경로에서 id값을 가져옴
 
-  const restaurantData = data.find((item) => item.id === parseInt(id, 10));
+  const restaurantData = data.find(function (item) {
+    return item.id === Number(id);
+  }); //JSON 데이터에서 해당 id를 가진 음식점 서치
+
   const { name, address, distance, reviewCount, rating, liked } =
-    restaurantData;
+    restaurantData; //데이터 저장
 
   return (
     <DetailContainer>
@@ -52,6 +56,7 @@ function RestaurantDetail() {
         <DetailTxt>평점: {rating}</DetailTxt>
         <DetailMsg liked={liked}>
           {liked ? "좋아요: 좋아요!" : "좋아요: 아직 좋아요를 누르지 않았어요!"}
+          {/* 좋아요 여부에 따라 메세지 다르게 출력 */}
         </DetailMsg>
       </DetailWrap>
     </DetailContainer>
