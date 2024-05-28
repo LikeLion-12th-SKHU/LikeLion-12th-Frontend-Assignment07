@@ -1,14 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import data from "../JMT.json";
 
 const RestaurantDetails = () => {
-  const { id } = useParams(); // useParams 훅을 사용하여 URL 파라미터에서 id 값을 가져옴
-  const { state } = useLocation(); // useLocation 훅을 사용해서 현재 경로의 위치 정보를 가져옴
+  const { id } = useParams();
+  const location = useLocation();
+  const parsedId = parseInt(id, 10); // URL에서 받은 id값은 처음에 문자열이기 때문에 10진수로 바꿔줌
 
-  const parsedId = parseInt(id, 10); // id를 10진수로
+  // restaurant, liked를 useState로 정의
+  const [restaurant, setRestaurant] = useState(null);
+  const [liked, setLiked] = useState(false);
 
-  const restaurant = data.find((item) => item.id === parsedId); // 전달받은 id와 일치하는 restaurant 데이터를 찾음
+  // 처음이랑 parsedId가 바뀔 때 (JMT.json에서 parsedId와 일치하는 음식점 찾음, 찾으면 상태 업데이트)실행
+  useEffect(() => {
+    const foundRestaurant = data.find((item) => item.id === parsedId);
+    if (foundRestaurant) {
+      setRestaurant(foundRestaurant);
+      setLiked(foundRestaurant.liked);
+    }
+  }, [parsedId]);
+
+  // 이모지를 클릭해서 location.state가 변경되면 이를 감지하고 liked 상태를 업데이트함
+  useEffect(() => {
+    if (location.state && location.state.liked !== undefined) {
+      setLiked(location.state.liked);
+    }
+  }, [location.state]);
+
+  if (!restaurant) {
+    return <div>해당하는 레스토랑을 찾을 수 없습니다.</div>;
+  }
 
   return (
     <div>
@@ -20,11 +41,7 @@ const RestaurantDetails = () => {
         <img src={restaurant.imageUrl} alt={restaurant.name} />
       </p>
       <p>{restaurant.reviewCount} 개의 리뷰가 있어요!</p>
-      <p>
-        {state && state.liked
-          ? "좋아요를 눌렀어요!"
-          : "좋아요를 아직 누르지 않았어요!"}
-      </p>
+      <p>{liked ? "좋아요를 눌렀어요!" : "좋아요를 아직 누르지 않았어요!"}</p>
     </div>
   );
 };

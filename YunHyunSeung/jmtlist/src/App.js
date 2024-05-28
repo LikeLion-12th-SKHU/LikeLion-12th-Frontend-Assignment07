@@ -21,10 +21,19 @@ function App() {
   );
 
   const handleDetailClick = (id) => {
-    const restaurant = restaurants.find((item) => item.id === id);
-    navigate(`/${id}`, {
-      state: { liked: restaurant ? restaurant.liked : false },
-    });
+    const restaurant = restaurants.find((r) => r.id === id);
+    navigate(`/${id}`, { state: { liked: restaurant.liked } });
+  };
+
+  // liked id의 상태가 true 또는 false로 바뀌는 것을 업데이트 해주는 함수
+  const handleLikeClick = (id) => {
+    setRestaurants((prevRestaurants) =>
+      prevRestaurants.map((restaurant) =>
+        restaurant.id === id
+          ? { ...restaurant, liked: !restaurant.liked }
+          : restaurant
+      )
+    );
   };
 
   return (
@@ -46,6 +55,7 @@ function App() {
             address={restaurant.address}
             imageUrl={restaurant.imageUrl}
             liked={restaurant.liked}
+            onLikeClick={handleLikeClick}
             onDetailsClick={() => handleDetailClick(restaurant.id)}
           />
         ))}
