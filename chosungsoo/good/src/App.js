@@ -1,14 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import MainComponent from "./components/MainComponent";
-import RestaurantDetail from "./components/RestaurantDetail";
+import MainPage from "./components/MainComponent";
+import RestaurantDetailPage from "./components/RestaurantDetail";
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<MainComponent />} />
-        <Route path="/:id" element={<RestaurantDetail />} />
+        <Route exact path="/" element={<MainPage />} />
+        <Route path="/:id" element={<RestaurantDetailPage />} />
       </Routes>
     </Router>
   );

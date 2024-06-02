@@ -10,6 +10,7 @@ const StyledDetail = styled.div`
   width: 80%;
   margin: auto;
 `;
+
 // RestaurantDetail 컴포넌트 정의
 const RestaurantDetail = () => {
   // URL에서 음식의 ID를 가져오기 위해 useParams 훅 사용

@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import data from "../JMT.json";
-import useInput from "../hooks/useInput";
 import { Link } from "react-router-dom";
-import RestaurantDetail from "./RestaurantDetail";
 import Card from "./Card";
-import Emoji from "./Emoji";
 import styled from "styled-components";
 
 const StyledCard = styled.div`
@@ -16,22 +13,50 @@ const StyledTitle = styled.div`
   text-align: center;
 `;
 
+const StyleEmoji = styled.div`
+  border: 5px solid skyblue;
+  border-radius: 20px;
+  width: fit-content;
+  margin: auto;
+`;
+
 // MainComponent 컴포넌트 정의
 const MainComponent = () => {
   // 검색어를 상태로 관리
   const [searchTerm, setSearchTerm] = useState("");
+  // 맛집 데이터를 상태로 관리
+  const [restaurants, setRestaurants] = useState(data);
 
   // 검색어를 업데이트하는 함수
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  // 검색어가 입력된 경우 필터링된 맛집 리스트 반환, 그렇지 않은 경우 전체 맛집 리스트 반환
-  const filteredRestaurants = searchTerm
-    ? data.filter((restaurant) =>
-        restaurant.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : data;
+  // JSON 데이터를 업데이트하는 함수
+  const toggleLiked = (itemId) => {
+    const updatedRestaurants = restaurants.map((item) => {
+      if (item.id === itemId) {
+        return { ...item, liked: !item.liked }; // liked 값을 토글
+      }
+      return item;
+    });
+    setRestaurants(updatedRestaurants); // 상태 업데이트
+  };
+
+  const Emoji = ({ item }) => {
+    // 이모티콘의 상태를 관리하는 state 추가
+    const [emojiState, setEmojiState] = useState(item.liked);
+
+    // 클릭 이벤트를 처리하는 함수
+    const toggleEmoji = () => {
+      setEmojiState(!emojiState); // 이모티콘 상태 토글
+      toggleLiked(item.id); // liked 값을 토글하는 함수 호출
+    };
+
+    return (
+      <StyleEmoji onClick={toggleEmoji}>{emojiState ? "🤍" : "😵"}</StyleEmoji>
+    );
+  };
 
   // MainComponent 컴포넌트 반환
   return (
@@ -51,25 +76,26 @@ const MainComponent = () => {
       {/* 카드 컨테이너 */}
       <div className="card-container">
         {/* 필터링된 맛집 리스트를 매핑하여 각각의 카드로 렌더링 */}
-        {filteredRestaurants.map((restaurant) => (
-          <StyledCard>
-            {/* Link 컴포넌트를 사용하여 카드를 클릭할 때 해당 음식의 상세 정보
-            페이지로 이동할 수 있도록 설정 */}
-            <Link
-              to={`/${restaurant.id}`}
-              key={restaurant.id}
-              className="card-link"
-            >
-              {/* Card 컴포넌트를 사용하여 각 음식 카드 렌더링 */}
-              <Card
-                name={restaurant.name}
-                address={restaurant.address}
-                imageUrl={restaurant.imageUrl}
-              />
-            </Link>
-            <Emoji />
-          </StyledCard>
-        ))}
+        {restaurants
+          .filter((restaurant) =>
+            restaurant.name.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+          .map((item) => (
+            <StyledCard key={item.id}>
+              {/* Link 컴포넌트를 사용하여 카드를 클릭할 때 해당 음식의 상세 정보
+              페이지로 이동할 수 있도록 설정 */}
+              <Link to={`/${item.id}`} className="card-link">
+                {/* Card 컴포넌트를 사용하여 각 음식 카드 렌더링 */}
+                <Card
+                  name={item.name}
+                  address={item.address}
+                  imageUrl={item.imageUrl}
+                />
+              </Link>
+              {/* 이모티콘 추가 */}
+              <Emoji item={item} />
+            </StyledCard>
+          ))}
       </div>
     </div>
   );
