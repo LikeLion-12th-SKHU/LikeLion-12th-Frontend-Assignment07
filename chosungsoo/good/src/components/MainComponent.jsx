@@ -32,6 +32,18 @@ const MainComponent = () => {
     setSearchTerm(event.target.value);
   };
 
+  //---------------------수정 한 부분(모든 이모티콘이 동시에 바뀌는 현상 발생)---------------------------------
+
+  // 이모티콘의 상태를 관리하는 state 추가
+  const [emojiState, setEmojiState] = useState(false);
+
+  // 클릭 이벤트를 처리하는 함수
+  const toggleEmoji = (item) => {
+    setEmojiState(!emojiState); // 이모티콘 상태 토글
+    toggleLiked(item.id); // liked 값을 토글하는 함수 호출
+  };
+  //----------------------------------------------------------------------//
+
   // JSON 데이터를 업데이트하는 함수
   const toggleLiked = (itemId) => {
     const updatedRestaurants = restaurants.map((item) => {
@@ -41,21 +53,6 @@ const MainComponent = () => {
       return item;
     });
     setRestaurants(updatedRestaurants); // 상태 업데이트
-  };
-
-  const Emoji = ({ item }) => {
-    // 이모티콘의 상태를 관리하는 state 추가
-    const [emojiState, setEmojiState] = useState(item.liked);
-
-    // 클릭 이벤트를 처리하는 함수
-    const toggleEmoji = () => {
-      setEmojiState(!emojiState); // 이모티콘 상태 토글
-      toggleLiked(item.id); // liked 값을 토글하는 함수 호출
-    };
-
-    return (
-      <StyleEmoji onClick={toggleEmoji}>{emojiState ? "🤍" : "😵"}</StyleEmoji>
-    );
   };
 
   // MainComponent 컴포넌트 반환
@@ -93,7 +90,9 @@ const MainComponent = () => {
                 />
               </Link>
               {/* 이모티콘 추가 */}
-              <Emoji item={item} />
+              <StyleEmoji onClick={() => toggleEmoji(item)}>
+                {emojiState ? "🤍" : "😵"}
+              </StyleEmoji>
             </StyledCard>
           ))}
       </div>
