@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import CardDetails from "./CardDetails";
+import Search from "./Search";
 
 const CardContainer = styled.div`
   position: relative;
