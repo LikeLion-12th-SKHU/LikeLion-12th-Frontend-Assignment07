@@ -1,17 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import MainPage from "./components/MainComponent";
-import RestaurantDetailPage from "./components/RestaurantDetail";
+import Search from "./components/Search";
+import RestaurantDetail from "./components/RestaurantDetail";
+import JMT from "./JMT.json";
 
-const App = () => {
+function App() {
+  const [restaurants, setRestaurants] = useState(JMT);
+
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<MainPage />} />
-        <Route path="/:id" element={<RestaurantDetailPage />} />
+        <Route
+          path="/"
+          element={
+            <Search restaurants={restaurants} setRestaurants={setRestaurants} />
+          }
+        />
+        <Route
+          path="/restaurant/:id"
+          element={
+            <RestaurantDetail
+              restaurants={restaurants}
+              setRestaurants={setRestaurants}
+            />
+          }
+        />
       </Routes>
     </Router>
   );
-};
+}
 
 export default App;
