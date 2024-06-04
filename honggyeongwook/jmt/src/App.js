@@ -41,17 +41,14 @@ const App = () => {
             element={
               <div>
                 {searchRestaurants.map((item) => (
-                  <Link to={`/${item.id}`} key={item.id}>
-                    {" "}
-                    {/* 레스토랑 상세 정보로 링크 */}
-                    <Card
-                      name={item.name}
-                      address={item.address}
-                      imageUrl={item.imageUrl}
-                      liked={item.liked}
-                      updateLike={() => updateLike(item.id)} // 좋아요 상태 토글 함수 전달
-                    />
-                  </Link>
+                  <Card
+                    name={item.name}
+                    address={item.address}
+                    imageUrl={item.imageUrl}
+                    liked={item.liked}
+                    updateLike={() => updateLike(item.id)} // 좋아요 상태 토글 함수 전달
+                    id={item.id}
+                  />
                 ))}
               </div>
             }

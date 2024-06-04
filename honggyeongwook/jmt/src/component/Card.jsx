@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 // 카드 컨테이너 스타일 정의
@@ -43,13 +44,18 @@ const LikeButton = styled.button`
 
 // Card 컴포넌트 정의
 // 레스토랑의 이름, 주소, 이미지, 좋아요 상태, 좋아요 토글 기능을 props로 받아 렌더링
-const Card = ({ name, address, imageUrl, liked, updateLike }) => {
+const Card = ({ name, address, imageUrl, liked, updateLike, id }) => {
   return (
     <CardContainer>
-      <Image src={imageUrl} alt={name} />
+      <Link to={`/${id}`} key={id}>
+        {/* 레스토랑 상세 정보로 링크 */}
+        <Image src={imageUrl} alt={name} />
+      </Link>
       <Container>
-        <Name>{name}</Name>
-        <Address>{address}</Address>
+        <Link to={`/${id}`} key={id}>
+          <Name>{name}</Name>
+          <Address>{address}</Address>
+        </Link>
       </Container>
       <LikeButton onClick={updateLike}>{liked ? "🤍" : "😵"}</LikeButton>
     </CardContainer>
